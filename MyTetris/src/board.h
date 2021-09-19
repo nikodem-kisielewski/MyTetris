@@ -15,7 +15,7 @@
 class Board
 {
 private:
-	unsigned char* playField;
+	unsigned char playField[BOARD_WIDTH * BOARD_HEIGHT];
 public:
 	Board();
 	void addPiece(Shapes shape, Board board, int currentRotation, int currentX, int currentY);

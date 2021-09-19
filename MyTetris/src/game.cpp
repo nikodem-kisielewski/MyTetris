@@ -225,7 +225,7 @@ void gameLoop()
 			}
 		}
 
-		//Rendering the game screen
+		//Rendering the game
 		render.drawBoard(board);
 		render.drawShadow(shape, board, currentX, currentY, currentRotation);
 		render.drawShape(shape, currentX, currentY, currentRotation);

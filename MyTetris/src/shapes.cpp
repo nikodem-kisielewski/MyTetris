@@ -10,7 +10,7 @@
 // Default constructor
 Shapes::Shapes() : currentShape(0)
 {
-    std::string allShapes[7] = { "....XXXX........",
+    allShapes = { "....XXXX........",
                              ".....XX..XX.....",
                              "X..XXX...",
                              "..XXXX...",
