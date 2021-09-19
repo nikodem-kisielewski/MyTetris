@@ -10,14 +10,13 @@
 // Default constructor
 Shapes::Shapes() : currentShape(0)
 {
-    allShapes = { "....XXXX........",
-                             ".....XX..XX.....",
-                             "X..XXX...",
-                             "..XXXX...",
-                             ".XXXX....",
-                             "XX..XX...",
-                             ".X.XXX..."
-    };
+    allShapes[0].append("....XXXX........");
+    allShapes[1].append(".....XX..XX.....");
+    allShapes[2].append("X..XXX...");
+    allShapes[3].append("..XXXX...");
+    allShapes[4].append(".XXXX....");
+    allShapes[5].append("XX..XX...");
+    allShapes[6].append(".X.XXX...");
 }
 
 // Returns the current shape as a string
@@ -56,7 +55,7 @@ int Shapes::rotate(int x, int y, int currentRotation)
         switch (currentRotation % 4)
         {
         case 0:
-            return y * 4 + x;
+            return (y * 4) + x;
         case 1:
             return 12 + y - (x * 4);
         case 2:
@@ -70,7 +69,7 @@ int Shapes::rotate(int x, int y, int currentRotation)
         switch (currentRotation % 4)
         {
         case 0:
-            return y * 3 + x;
+            return (y * 3) + x;
         case 1:
             return 6 + y - (x * 3);
         case 2:
@@ -79,4 +78,5 @@ int Shapes::rotate(int x, int y, int currentRotation)
             return 2 - y + (x * 3);
         }
     }
+    return -1;
 }

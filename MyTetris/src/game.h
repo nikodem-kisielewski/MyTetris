@@ -1,3 +1,10 @@
+/*
+*	Tetris core game mechanics, handling user input, playing music, and the entire gameloop.
+*
+*	@author Nikodem Kisielewski
+*
+*/
+
 #pragma once
 
 #include "rendering.h"
@@ -10,6 +17,6 @@
 
 bool checkCollision(Shapes shape, Board board, int currentRotation, int xPos, int yPos);
 bool hardDrop(Shapes shape, Board board, int currentRotation, int currentX, int& currentY);
-void lineCheck(Board board, std::vector<int> lines, int& lineCount, int maxIndex, int currentY);
-void removeLines(Board board, std::vector<int> storeLine);
+void lineCheck(Board board, std::vector<int>& lines, int& lineCount, int& speed, int& level, int maxIndex, int currentY);
+void removeLines(Board board, std::vector<int>& storeLine);
 void gameLoop();

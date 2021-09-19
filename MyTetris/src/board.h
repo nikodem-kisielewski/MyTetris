@@ -15,10 +15,10 @@
 class Board
 {
 private:
-	unsigned char playField[BOARD_WIDTH * BOARD_HEIGHT];
+	unsigned char* playField;
 public:
 	Board();
-	void addPiece(Shapes shape, Board board, int currentRotation, int currentX, int currentY);
+	void addPiece(Shapes shape, int currentRotation, int currentX, int currentY);
 	int getItemAt(int x, int y);
 	void setLine(int x, int y);
 	void setAbove(int x, int y);

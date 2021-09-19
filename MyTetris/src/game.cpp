@@ -1,4 +1,9 @@
-// The core game mechanics of tetris and user input
+/*
+*	Tetris core game mechanics, handling user input, playing music, and the entire gameloop.
+* 
+*	@author Nikodem Kisielewski
+* 
+*/
 
 #include "game.h"
 
@@ -13,15 +18,13 @@ bool checkCollision(Shapes shape, Board board, int currentRotation, int xPos, in
 		for (int y = 0; y < maxIndex; y++)
 		{
 			int shapeIndex = shape.rotate(x, y, currentRotation);
-			int fieldItem = board.getItemAt(yPos + y, xPos + x);
+			int fieldItem = board.getItemAt(xPos + x, yPos + y);
 			if (xPos + x >= 0 && xPos + x < BOARD_WIDTH)
 			{
 				if (yPos + y >= 0 && yPos + y < BOARD_HEIGHT)
 				{
 					if (currentShape[shapeIndex] == 'X' && fieldItem != 0)
-					{
 						return false;
-					}
 				}
 			}
 		}
@@ -36,7 +39,7 @@ bool hardDrop(Shapes shape, Board board, int currentRotation, int currentX, int&
 	return true;
 }
 
-void lineCheck(Board board, std::vector<int> lines, int& lineCount, int maxIndex, int currentY)
+void lineCheck(Board board, std::vector<int> &lines, int &lineCount, int& speed, int& level, int maxIndex, int currentY)
 {
 	for (int y = 0; y < maxIndex; y++)
 	{
@@ -45,39 +48,42 @@ void lineCheck(Board board, std::vector<int> lines, int& lineCount, int maxIndex
 			bool line = true;
 			for (int x = 1; x < BOARD_WIDTH - 1; x++)
 			{
-				int fieldItem = board.getItemAt(x, y);
+				int fieldItem = board.getItemAt(x, y + currentY);
 				line &= (fieldItem) != 0;
 			}
 			if (line)
 			{
 				for (int x = 1; x < BOARD_WIDTH - 1; x++)
 				{
-					board.setLine(x, y);
+					board.setLine(x, y + currentY);
 				}
 				lineCount++;
+				// Speed the game up every 10 lines
+				if (lineCount > 0 && lineCount % 10 == 0 && speed > 1)
+				{
+					speed--;
+					level = 21 - speed;
+				}
 				lines.push_back(currentY + y);
 			}
 		}
 	}
 }
 
-// Animation for getting a new line (lines flash white)
-void removeLines(Board board, std::vector<int> storeLine)
+// Removes any lines the player got from the board
+void removeLines(Board board, std::vector<int>& storeLine)
 {
-	if (!storeLine.empty())
+	for (auto& v : storeLine)
 	{
-		for (auto& v : storeLine)
+		for (int x = 1; x < BOARD_WIDTH - 1; x++)
 		{
-			for (int x = 1; x < BOARD_WIDTH - 1; x++)
+			for (int y = v; y > 0; y--)
 			{
-				for (int y = v; y > 0; y--)
-				{
-					board.setAbove(x, y);
-				}
-				board.setEmpty(x);
+				board.setAbove(x, y);
 			}
-			storeLine.clear();
+			board.setEmpty(x);
 		}
+		storeLine.clear();
 	}
 }
 
@@ -103,8 +109,8 @@ void gameLoop()
 	int lineCount = 0;
 
 	// Text
-	std::string scoreText = "Score: " + score;
-	std::string levelText = "Level: " + level;
+	std::string scoreText = "Score: " + std::to_string(score);
+	std::string levelText = "Level: " + std::to_string(level);
 
 	// Vector for handling lines
 	std::vector<int> storeLine;
@@ -120,6 +126,12 @@ void gameLoop()
 	shape.currentShape = rand() % 7;
 	nextShape = rand() % 7;
 
+	// Music
+	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+	Mix_Music* theme = Mix_LoadMUS("../Dependencies/TetrisTheme.wav");
+	Mix_PlayMusic(theme, -1);
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
+
 	while (!gameOver)
 	{
 		// Timing of the game
@@ -127,9 +139,6 @@ void gameLoop()
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		speedCounter++;
 		moveDown = (speedCounter == speed);
-
-		// Clear the screen of previous renders that are not needed anymore
-		render.clear();
 
 		// User input
 		while (SDL_PollEvent(&e) != 0)
@@ -173,7 +182,7 @@ void gameLoop()
 					}
 					break;
 				case SDLK_SPACE:
-					hardDrop(shape, board, currentRotation, currentX, currentY);
+					moveDown = hardDrop(shape, board, currentRotation, currentX, currentY);
 					break;
 
 				case SDLK_ESCAPE:
@@ -197,20 +206,23 @@ void gameLoop()
 			// If it can't, add it to the playing field
 			else
 			{
-				board.addPiece(shape, board, currentRotation, currentX, currentY);
+ 				board.addPiece(shape, currentRotation, currentX, currentY);
 
 				// Check for lines
-				lineCheck(board, storeLine, lineCount, shape.maxIndex(), currentY);
+				lineCheck(board, storeLine, lineCount, speed, level, shape.maxIndex(), currentY);
 
 				// Increase the player's score for each piece and line
 				score += 50;
 				if (!storeLine.empty()) score += (1 << storeLine.size()) * 100;
 
-				// Speed the game up every 10 lines
-				if (lineCount % 10 == 0 && speed > 1)
+				// Remove any lines that the user got
+				if (!storeLine.empty())
 				{
-					speed--;
-					level = 21 - speed;
+					// Before we remove the lines, draw the board to simulate a line clearing animation
+					render.drawBoard(board);
+					render.drawUpdate();
+					std::this_thread::sleep_for(std::chrono::milliseconds(100));
+					removeLines(board, storeLine);
 				}
 
 				// Get the next piece
@@ -225,20 +237,20 @@ void gameLoop()
 			}
 		}
 
-		//Rendering the game
+		//Rendering the game screen
+		render.clear();
 		render.drawBoard(board);
 		render.drawShadow(shape, board, currentX, currentY, currentRotation);
 		render.drawShape(shape, currentX, currentY, currentRotation);
 		render.drawNext(nextShape);
 		render.drawTop();
-		render.drawText(scoreText, 10, 10, 150, 40);
-		render.drawText(levelText, 10, 60, 120, 40);
-		render.drawText("Next Shape", BOARD_WIDTH * GRID_SIZE - 15, 60 + TOP_OFFSET + 10, 120, 30);
 
-		// Line clearing animation
-		render.drawUpdate();
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
-		removeLines(board, storeLine);
+		// Text rendering
+ 		scoreText = "Score: " + std::to_string(score);
+		levelText = "Level: " + std::to_string(level);
+		render.drawText(scoreText, 10, 10, std::strlen(scoreText.c_str()) * GRID_SIZE, 40);
+		render.drawText(levelText, 10, 60, std::strlen(levelText.c_str()) * GRID_SIZE, 40);
+		render.drawText("Next Shape", BOARD_WIDTH * GRID_SIZE - 15, 60 + TOP_OFFSET + 10, 120, 30);
 
 		render.drawUpdate();
 	}

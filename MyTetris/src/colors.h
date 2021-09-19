@@ -1,5 +1,5 @@
 /*
-*   Struct that stores all the colors that will be used for drawing to the window.
+*   Stores all the colors that will be used for drawing to the window.
 *
 *   @author Nikodem Kisielewski
 *

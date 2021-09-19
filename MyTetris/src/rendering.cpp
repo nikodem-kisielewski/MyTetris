@@ -38,7 +38,7 @@ Rendering::Rendering()
 	rect.x = rect.y = rect.w = rect.h = 0;
 	texture = NULL;
 	textSurface = NULL;
-	font = TTF_OpenFont("Minecraft.ttf", 64);
+	font = TTF_OpenFont("../Dependencies/pixel.ttf", 64);
 	textColor = { 255, 255, 255, 255 };
 }
 
@@ -91,8 +91,9 @@ void Rendering::drawNext(int nextNum)
 {
 	// Get the information for the current shape
 	Shapes shape;
-	std::string nextShape = shape.getShape(nextNum);
-	int maxIndex = shape.maxIndex(nextNum);
+	shape.currentShape = nextNum;
+	std::string nextShape = shape.getShape();
+	int maxIndex = shape.maxIndex();
 
 	SDL_SetRenderDrawColor(renderer, shapeColors[nextNum].r, shapeColors[nextNum].g, shapeColors[nextNum].b, shapeColors[nextNum].a);
 	for (int x = 0; x < maxIndex; x++)
@@ -116,10 +117,13 @@ void Rendering::drawTop()
 	for (int x = 0; x < SCREEN_WIDTH / GRID_SIZE; x++)
 		for (int y = 0; y < TOP_OFFSET / GRID_SIZE; y++)
 		{
-			rect.x = x * GRID_SIZE;
-			rect.y = y * GRID_SIZE;
-			rect.w = rect.h = GRID_SIZE;
-			SDL_RenderFillRect(renderer, &rect);
+			if (x * GRID_SIZE > 10 || y * GRID_SIZE > 4)
+			{
+				rect.x = x * GRID_SIZE;
+				rect.y = y * GRID_SIZE;
+				rect.w = rect.h = GRID_SIZE;
+				SDL_RenderFillRect(renderer, &rect);
+			}
 		}
 }
 
@@ -131,7 +135,7 @@ void Rendering::drawShadow(Shapes shape, Board board, int currentX, int currentY
 	int possibleY = currentY;
 
 	SDL_SetRenderDrawColor(renderer, black.r, black.g, black.b, black.a);
-	while (possibleY + 1 > currentY && checkCollision(shape, board, currentRotation, currentX, currentY))
+	while (checkCollision(shape, board, currentRotation, currentX, possibleY + 1))
 		possibleY++;
 	for (int x = 0; x < maxIndex; x++)
 		for (int y = 0; y < maxIndex; y++)
@@ -159,9 +163,10 @@ void Rendering::drawText(std::string text, int x, int y, int w, int h)
 	SDL_DestroyTexture(texture);
 }
 
-// Clears the renderer
+// Clears the the screen to gray
 void Rendering::clear()
 {
+	SDL_SetRenderDrawColor(renderer, border.r, border.g, border.b, border.a);
 	SDL_RenderClear(renderer);
 }
 
