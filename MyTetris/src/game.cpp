@@ -1,11 +1,8 @@
+#include "game.h"
+
 /*
 *	Tetris core game mechanics, handling user input, playing music, and the entire gameloop.
-* 
-*	@author Nikodem Kisielewski
-* 
 */
-
-#include "game.h"
 
 // Check to see if the piece will fit in the next calculated position
 bool checkCollision(Shapes shape, Board board, int currentRotation, int xPos, int yPos)
@@ -130,7 +127,7 @@ void gameLoop()
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 	Mix_Music* theme = Mix_LoadMUS("../Dependencies/TetrisTheme.wav");
 	Mix_PlayMusic(theme, -1);
-	Mix_VolumeMusic(MIX_MAX_VOLUME / 4);
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 8);
 
 	while (!gameOver)
 	{

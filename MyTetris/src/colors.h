@@ -1,11 +1,8 @@
+#pragma once
+
 /*
 *   Stores all the colors that will be used for drawing to the window.
-*
-*   @author Nikodem Kisielewski
-*
 */
-
-#pragma once
 
 // Struct to store color codes
 typedef struct Color
@@ -81,8 +78,8 @@ const Color boardColors[10] =
     // T color (purple)
     color(128, 0, 128, 255),
 
-    // Border
-    color(128, 128, 128, 255),
+    // Border (gray)
+    border,
 
     // Line
     white

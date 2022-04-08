@@ -1,8 +1,5 @@
 /*
 *	Class that initializes the game board, stores board states, and adds shapes to the board.
-*
-*	@author Nikodem Kisielewski
-*
 */
 
 #include "board.h"

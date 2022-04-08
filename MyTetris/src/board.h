@@ -1,10 +1,3 @@
-/*
-*	Class that initializes the game board, stores board states, and adds shapes to the board.
-*
-*	@author Nikodem Kisielewski
-*
-*/
-
 #pragma once
 
 #include "shapes.h"
@@ -12,6 +5,9 @@
 #define BOARD_WIDTH 12
 #define BOARD_HEIGHT 21
 
+/*
+*	Class that initializes the game board, stores board states, and adds shapes to the board.
+*/
 class Board
 {
 private:

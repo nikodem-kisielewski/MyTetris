@@ -1,8 +1,5 @@
 /*
 *	Class that handles the rendering of the game.
-*
-*	@author Nikodem Kisielewski
-*
 */
 
 #include "rendering.h"

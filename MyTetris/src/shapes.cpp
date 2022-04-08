@@ -1,8 +1,5 @@
 /*
 *   Class that stores all of the shape types, handles rotation of shapes, and stores the current shape and its rotation
-*
-*   @author Nikodem Kisielewski
-*
 */
 
 #include "shapes.h"

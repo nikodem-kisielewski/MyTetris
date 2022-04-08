@@ -1,10 +1,3 @@
-/*
-*	Tetris core game mechanics, handling user input, playing music, and the entire gameloop.
-*
-*	@author Nikodem Kisielewski
-*
-*/
-
 #pragma once
 
 #include "rendering.h"
@@ -14,6 +7,10 @@
 #include <time.h>
 #include <thread>
 #include <vector>
+
+/*
+*	Tetris core game mechanics, handling user input, playing music, and the entire gameloop.
+*/
 
 bool checkCollision(Shapes shape, Board board, int currentRotation, int xPos, int yPos);
 bool hardDrop(Shapes shape, Board board, int currentRotation, int currentX, int& currentY);

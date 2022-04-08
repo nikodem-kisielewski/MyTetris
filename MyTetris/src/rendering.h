@@ -1,10 +1,3 @@
-/*
-*	Class that handles the rendering of the game.
-*
-*	@author Nikodem Kisielewski
-*
-*/
-
 #pragma once
 
 #include "colors.h"
@@ -21,6 +14,9 @@
 #define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 750
 
+/*
+*	Class that handles the rendering of the game.
+*/
 class Rendering
 {
 private:
