@@ -124,8 +124,8 @@ void Rendering::drawHeld(int heldShape)
 				rect.x = (x + BOARD_WIDTH) * GRID_SIZE - 10;
 				// Offset to account for the position of the box shape
 				if (heldShape == 1)
-					rect.y = (y * GRID_SIZE) + TOP_OFFSET * 2 - 30;
-				else rect.y = (y * GRID_SIZE) + TOP_OFFSET * 2;
+					rect.y = (y * GRID_SIZE) + TOP_OFFSET * 2.5 - 30;
+				else rect.y = (y * GRID_SIZE) + TOP_OFFSET * 2.5;
 				rect.w = rect.h = GRID_SIZE;
 				SDL_RenderFillRect(renderer, &rect);
 			}

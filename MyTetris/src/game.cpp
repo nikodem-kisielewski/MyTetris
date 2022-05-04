@@ -156,6 +156,7 @@ void gameLoop(Rendering render)
 			if (e.type == SDL_QUIT)
 			{
 				gameOver = true;
+				currState = GameState::QUIT;
 			}
 			// User is pressing down a key
 			if (e.type == SDL_KEYDOWN)
@@ -294,11 +295,12 @@ void gameLoop(Rendering render)
 		render.drawText(scoreText, 10, 10, std::strlen(scoreText.c_str()) * GRID_SIZE, 40);
 		render.drawText(levelText, 10, 60, std::strlen(levelText.c_str()) * GRID_SIZE, 40);
 		render.drawText("Next Shape", BOARD_WIDTH * GRID_SIZE - 15, 60 + TOP_OFFSET + 10, 120, 30);
-		render.drawText("Held Shape", BOARD_WIDTH* GRID_SIZE - 15, 60 + TOP_OFFSET * 2 + 10, 120, 30);
+		render.drawText("Held Shape", BOARD_WIDTH* GRID_SIZE - 15, 60 + TOP_OFFSET * 2.5 + 10, 120, 30);
 
 		render.drawUpdate();
 	}
 	finalScore = score;
+	if (currState != GameState::QUIT) currState = GameState::GAME_OVER;
 }
 
 // The main menu of the game
@@ -307,11 +309,12 @@ void menu(Rendering render)
 	render.clear();
 	render.drawText("MyTetris", SCREEN_WIDTH / 8, 30, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 10);
 	render.drawText("Controls:", SCREEN_WIDTH / 8, 200, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 20);
-	render.drawText("Arrow keys to move/rotate pieces", SCREEN_WIDTH / 6, 250, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 20);
-	render.drawText("Space to 'hard drop' a piece", SCREEN_WIDTH / 6, 300, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 20);
-	render.drawText("M to mute/unmute music", SCREEN_WIDTH / 6, 350, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 20);
-	render.drawText("Escape to quit the game", SCREEN_WIDTH / 6, 400, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 20);
-	render.drawText("Press enter to start", SCREEN_WIDTH / 8, 500, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 20);
+	render.drawText("Arrow keys to move/rotate pieces", SCREEN_WIDTH / 6, 250, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 25);
+	render.drawText("Space to 'hard drop' a piece", SCREEN_WIDTH / 6, 300, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 25);
+	render.drawText("C to hold a piece", SCREEN_WIDTH / 6, 350, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 25);
+	render.drawText("M to mute/unmute music", SCREEN_WIDTH / 6, 400, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 25);
+	render.drawText("Escape to quit the game", SCREEN_WIDTH / 6, 450, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 25);
+	render.drawText("Press enter to start", SCREEN_WIDTH / 8, 550, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 15);
 	render.drawUpdate();
 	while (currState == GameState::START_MENU)
 	{
@@ -406,7 +409,6 @@ void stateLoop()
 			break;
 		case GameState::IN_GAME:
 			gameLoop(render);
-			currState = GameState::GAME_OVER;
 			break;
 		case GameState::GAME_OVER:
 			gameOver(render);
