@@ -5,6 +5,6 @@
 */
 int main(int argc, char* argv[])
 {
-	gameLoop();
+	stateLoop();
 	return 0;
 }

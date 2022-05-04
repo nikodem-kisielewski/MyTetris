@@ -107,6 +107,31 @@ void Rendering::drawNext(int nextNum)
 			}
 }
 
+// Draws the held shape
+void Rendering::drawHeld(int heldShape)
+{
+	// Get the information for the current shape
+	Shapes shape;
+	shape.currentShape = heldShape;
+	std::string nextShape = shape.getShape();
+	int maxIndex = shape.maxIndex();
+
+	SDL_SetRenderDrawColor(renderer, shapeColors[heldShape].r, shapeColors[heldShape].g, shapeColors[heldShape].b, shapeColors[heldShape].a);
+	for (int x = 0; x < maxIndex; x++)
+		for (int y = 0; y < maxIndex; y++)
+			if (nextShape[shape.rotate(x, y, 0)] == 'X')
+			{
+				rect.x = (x + BOARD_WIDTH) * GRID_SIZE - 10;
+				// Offset to account for the position of the box shape
+				if (heldShape == 1)
+					rect.y = (y * GRID_SIZE) + TOP_OFFSET * 2 - 30;
+				else rect.y = (y * GRID_SIZE) + TOP_OFFSET * 2;
+				rect.w = rect.h = GRID_SIZE;
+				SDL_RenderFillRect(renderer, &rect);
+			}
+}
+
+
 // Draws the top of the screen
 void Rendering::drawTop()
 {

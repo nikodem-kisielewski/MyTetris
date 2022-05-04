@@ -12,8 +12,10 @@
 *	Tetris core game mechanics, handling user input, playing music, and the entire gameloop.
 */
 
+enum class GameState {START_MENU, IN_GAME, GAME_OVER, QUIT};
+
 bool checkCollision(Shapes shape, Board board, int currentRotation, int xPos, int yPos);
 bool hardDrop(Shapes shape, Board board, int currentRotation, int currentX, int& currentY);
 void lineCheck(Board board, std::vector<int>& lines, int& lineCount, int& speed, int& level, int maxIndex, int currentY);
-void removeLines(Board board, std::vector<int>& storeLine);
-void gameLoop();
+void removeLines(Board board, std::vector<int>& storeLine);					
+void stateLoop();

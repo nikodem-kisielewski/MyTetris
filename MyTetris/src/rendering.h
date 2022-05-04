@@ -32,6 +32,7 @@ public:
 	void drawUpdate();
 	void drawShape(Shapes shape, int currentX, int currentY, int currentRotation);
 	void drawBoard(Board board);
+	void drawHeld(int heldShape);
 	void drawNext(int nextNum);
 	void drawTop();
 	void drawShadow(Shapes shape, Board board, int currentX, int currentY, int currentRotation);

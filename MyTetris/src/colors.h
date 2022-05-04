@@ -79,8 +79,8 @@ const Color boardColors[10] =
     color(128, 0, 128, 255),
 
     // Border (gray)
-    border,
+    color(128, 128, 128, 255),
 
     // Line
-    white
+    color(255, 255, 255, 255)
 };
