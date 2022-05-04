@@ -359,8 +359,8 @@ void gameOver(Rendering render)
 		render.drawText("GAME OVER", SCREEN_WIDTH / 8, 30, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 10);
 		std::string scoreText = "Final Score: " + std::to_string(finalScore);
 		render.drawText(scoreText, SCREEN_WIDTH / 4, 200, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 20);
-		render.drawText("Press enter to restart", SCREEN_WIDTH / 8, 300, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 10);
-		render.drawText("Press escape to exit", SCREEN_WIDTH / 8, 400, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 10);
+		render.drawText("Press enter to restart", SCREEN_WIDTH / 8, 300, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 15);
+		render.drawText("Press escape to exit", SCREEN_WIDTH / 8, 400, SCREEN_WIDTH / 1.25, SCREEN_HEIGHT / 15);
 		render.drawUpdate();
 		// User input
 		SDL_Event e;
